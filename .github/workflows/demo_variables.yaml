@@ -1,0 +1,15 @@
+name: demo variables
+on: workflow_dispatch
+env:
+  cloud: expeed sfotware
+jobs:
+  demo:
+    runs-on: ubuntu-latest
+    env:
+      inner: elevate
+    steps:
+      - name: Print variables
+        run: |
+          echo "Cloud: ${{  env.cloud }}"
+          echo "Inner: ${{  env.inner }}"
+          echo "project variables: ${{ vars.project_name }}"

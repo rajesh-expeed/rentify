@@ -1,0 +1,17 @@
+name: context variable
+
+on: workflow_dispatch
+
+env:
+  platform: windows
+
+jobs:
+  windows_jobs:
+    runs-on: windows-latest
+    steps:
+      - name: Print context variables
+        run: |
+          echo "Platform: ${{ env.platform }}"
+          echo "Workflow: ${{ github.workflow }}"
+          echo "Repository: ${{ github.repository }}"
+          echo "triggering_actor: ${{ github.triggering_actor }}"

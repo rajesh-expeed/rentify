@@ -1,0 +1,24 @@
+name: User Input Workflow
+on:
+  workflow_dispatch:
+    inputs:
+      user_name:
+        description: "Enter your name"
+        required: true
+        type: string
+      user_age:
+        description: "Enter your age"
+        required: true
+        type: number
+
+jobs:
+  user_input_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print user input
+        env:
+          USER_NAME: ${{ inputs.user_name }}
+          USER_AGE: ${{ inputs.user_age }}
+        run: |
+          echo "Name: $USER_NAME"
+          echo "Age: $USER_AGE"
