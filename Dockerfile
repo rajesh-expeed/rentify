@@ -3,6 +3,7 @@ WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
+ENV VITE_BASE=/
 RUN npm run build
 
 # serving 
