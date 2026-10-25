@@ -1,0 +1,29 @@
+name: CICD
+on:
+  push:
+    branches:
+      - deploy-etc-instance
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout-source-code
+        uses: actions/checkout@v2
+      - name: Login to Docker hub
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build and push Docker image
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/rentify-docker .
+      - name: Push Docker image
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/rentify-docker:latest
+
+  deploye:
+    needs: build
+    runs-on: aws-ec2-rentify
+    steps:
+      - name: Pull docker image from Docker hub
+        run: docker pull ${{ secrets.DOCKER_USERNAME }}/rentify-docker:latest
+      - name: Delete the old container
+        run: docker rm -f rentify-container
+      - name: Run the new container
+        run: docker run -d -p 3000:80 --name rentify-container ${{ secrets.DOCKER_USERNAME }}/rentify-docker
